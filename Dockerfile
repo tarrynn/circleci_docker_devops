@@ -1,4 +1,4 @@
-FROM java/openjdk-8-jdk-alpine
+FROM mlaccetti/docker-oracle-java8-ubuntu-16.04
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
