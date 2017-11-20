@@ -1,4 +1,4 @@
-FROM dockerfile/ubuntu
+FROM java/openjdk-8-jdk-alpine
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -59,18 +59,6 @@ RUN mkdir -p /usr/local/etc \
     && mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
     && chmod 777 "$GEM_HOME" "$BUNDLE_BIN" \
     && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Install Java.
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
-
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
