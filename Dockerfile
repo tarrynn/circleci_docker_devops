@@ -60,7 +60,10 @@ RUN mkdir -p /usr/local/etc \
     && chmod 777 "$GEM_HOME" "$BUNDLE_BIN" \
     && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apt-get install -y default-jdk
+RUN add-apt-repository -y ppa:webupd8team/java
+
+RUN apt-get update \
+    && apt-get -y install oracle-java8-installer
 
 RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
@@ -68,11 +71,13 @@ RUN apt-get install -y apt-transport-https
 
 RUN echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list
 
-RUN apt-get update && sudo apt-get install -y logstash
+RUN apt-get update \
+    && sudo apt-get install -y logstash
 
 RUN logstash-plugin install logstash-output-amazon_es
 
-RUN pip install xlsx2csv && pip install awscurl --upgrade
+RUN pip install xlsx2csv \
+    && pip install awscurl --upgrade
 
 RUN apt-get update \
     && apt-get install -y telnet jq
