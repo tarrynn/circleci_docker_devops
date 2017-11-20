@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM dockerfile/ubuntu
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -60,10 +60,17 @@ RUN mkdir -p /usr/local/etc \
     && chmod 777 "$GEM_HOME" "$BUNDLE_BIN" \
     && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN add-apt-repository -y ppa:webupd8team/java
+# Install Java.
+RUN \
+  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+  add-apt-repository -y ppa:webupd8team/java && \
+  apt-get update && \
+  apt-get install -y oracle-java8-installer && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/cache/oracle-jdk8-installer
 
-RUN apt-get update \
-    && apt-get -y install oracle-java8-installer
+# Define commonly used JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
@@ -87,3 +94,5 @@ RUN apt-get update \
 
 RUN apt-get update \
     && apt-get install -y libgtk2.0-0 libgconf-2-4 libasound2 libxtst6 libxss1 libnss3 xvfb
+
+CMD ["bash"]
