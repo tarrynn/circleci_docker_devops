@@ -68,9 +68,11 @@ RUN apt-get update \
 RUN echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list
 
 RUN apt-get update \
-    && sudo apt-get install -y logstash
+    && apt-get install -y logstash
 
-RUN logstash-plugin install logstash-output-amazon_es
+RUN ln -s /usr/share/logstash/bin/logstash /bin/logstash
+
+RUN /usr/share/logstash/bin/logstash-plugin install logstash-output-amazon_es
 
 RUN pip install xlsx2csv \
     && pip install awscurl --upgrade
