@@ -86,4 +86,12 @@ RUN apt-get update \
 RUN apt-get update \
     && apt-get install -y libgtk2.0-0 libgconf-2-4 libasound2 libxtst6 libxss1 libnss3 xvfb
 
+RUN apt-get update \
+    && apt-get install -y nginx
+
+RUN apt-get update \
+    && apt-get install -y php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 CMD ["bash"]
